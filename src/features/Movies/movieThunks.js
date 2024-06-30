@@ -4,7 +4,7 @@ export const fetchMovies = createAsyncThunk(
   'movies/fetchMovies',
   async (params, { rejectWithValue }) => {
     const queryParams = {
-      title: params.title ,
+      title: params.title,
       genre: params.genre,
       release_year: params.release_year,
       sort_by: params.sort_by || 'rating',
@@ -39,6 +39,28 @@ export const fetchMovies = createAsyncThunk(
       }
     } catch (error) {
       console.log('Fetch Error:', error.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchMovie = createAsyncThunk(
+  'movies/fetchMovie',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:3030/api/v1/movie/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        return data;
+      } else {
+        return rejectWithValue(data);
+      }
+    } catch (error) {
       return rejectWithValue(error.message);
     }
   }

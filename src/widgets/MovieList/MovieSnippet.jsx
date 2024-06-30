@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Star from '../../shared/components/Star/Star';
 import styles from './MovieSnippet.module.css';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,13 +9,18 @@ const MovieSnippet = ({ movie }) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleRate = (rating) => {
     dispatch(rateMovie({ movieId: movie.id, userRate: rating, token }));
   };
 
+  const handleCardClick = () => {
+    navigate(`/movie/${movie.id}`);
+  };
+
   return (
-    <div className={styles.movieSnippet}>
+    <div className={styles.movieSnippet} onClick={handleCardClick}>
       <img src={movie.poster} alt={movie.title} />
       <div className={styles.details}>
         <h3>{movie.title}</h3>

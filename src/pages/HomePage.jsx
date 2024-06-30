@@ -24,7 +24,7 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: params.get('page') || 1,
-      limit: params.get('limit') || 10,
+      limit: params.get('limit') || 5,
     };
     setCurrentPage(Number(params.get('page')) || 1);
     console.log('Fetch Params:', fetchParams);
@@ -43,7 +43,7 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: page,
-      limit: params.get('limit') || 10,
+      limit: params.get('limit') || 5,
     }));
   };
 
@@ -67,7 +67,7 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: params.get('page') || 1,
-      limit: params.get('limit') || 10,
+      limit: params.get('limit') || 5,
     }));
   };
 
@@ -86,7 +86,7 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: params.get('page') || 1,
-      limit: params.get('limit') || 10,
+      limit: params.get('limit') || 5,
     }));
   };
 
@@ -107,3 +107,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
