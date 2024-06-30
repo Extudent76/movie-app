@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchMovies } from './movieThunks';
+import { fetchMovies, rateMovie } from './movieThunks';
 
 const movieSlice = createSlice({
   name: 'movies',
   initialState: {
     movies: [],
-    totalPages: 0,
     status: 'idle',
     error: null,
+    totalPages: 1,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -22,7 +22,14 @@ const movieSlice = createSlice({
       })
       .addCase(fetchMovies.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload;
+        state.error = action.error.message;
+      })
+      .addCase(rateMovie.fulfilled, (state, action) => {
+        const { movieId, userRate } = action.payload;
+        const movie = state.movies.find((movie) => movie.id === movieId);
+        if (movie) {
+          movie.userRating = userRate;
+        }
       });
   },
 });

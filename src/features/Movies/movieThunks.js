@@ -13,7 +13,6 @@ export const fetchMovies = createAsyncThunk(
       limit: params.limit || 10,
     };
 
-
     if (!params.title || params.title === 'undefined') {
       delete queryParams.title;
     }
@@ -40,6 +39,30 @@ export const fetchMovies = createAsyncThunk(
       }
     } catch (error) {
       console.log('Fetch Error:', error.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const rateMovie = createAsyncThunk(
+  'movies/rateMovie',
+  async ({ movieId, userRate, token }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:3030/api/v1/rateMovie`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ movieId, user_rate: userRate }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        return { movieId, userRate };
+      } else {
+        return rejectWithValue(data);
+      }
+    } catch (error) {
       return rejectWithValue(error.message);
     }
   }

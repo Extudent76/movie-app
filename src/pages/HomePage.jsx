@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Header from '../widgets/Header/Header';
 import Filter from '../widgets/Filter/Filter';
 import MovieList from '../widgets/MovieList/MovieList';
-import { fetchMovies } from '../features/Movies/movieThunks';
+import Pagination from '../shared/components/Pagination/Pagination';
 import Loader from '../shared/components/Loader/Loader';
+import { fetchMovies } from '../features/Movies/movieThunks';
 import styles from './HomePage.module.css';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { movies, status, error } = useSelector((state) => state.movies);
-  const loading = status === 'loading';
+  const { movies, status, error, totalPages } = useSelector((state) => state.movies);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -23,11 +24,28 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: params.get('page') || 1,
-      limit: params.get('limit') || 5,
+      limit: params.get('limit') || 10,
     };
+    setCurrentPage(Number(params.get('page')) || 1);
     console.log('Fetch Params:', fetchParams);
     dispatch(fetchMovies(fetchParams));
   }, [location.search, dispatch]);
+
+  const handlePageChange = (page) => {
+    const params = new URLSearchParams(location.search);
+    params.set('page', page);
+    window.history.replaceState({}, '', `${location.pathname}?${params.toString()}`);
+    setCurrentPage(page);
+    dispatch(fetchMovies({
+      title: params.get('title') || '',
+      genre: params.get('genre') || '',
+      release_year: params.get('release_year') || '',
+      sort_by: params.get('sort_by') || 'rating',
+      order: params.get('order') || 'desc',
+      page: page,
+      limit: params.get('limit') || 10,
+    }));
+  };
 
   const handleFilterChange = ({ genre, release_year }) => {
     const params = new URLSearchParams(location.search);
@@ -49,7 +67,7 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: params.get('page') || 1,
-      limit: params.get('limit') || 5,
+      limit: params.get('limit') || 10,
     }));
   };
 
@@ -68,7 +86,7 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: params.get('page') || 1,
-      limit: params.get('limit') || 5,
+      limit: params.get('limit') || 10,
     }));
   };
 
@@ -80,8 +98,9 @@ const HomePage = () => {
         <div className={styles.movieListContainer}>
           {status === 'loading' && <Loader />}
           {status === 'failed' && <p>{error}</p>}
-          {status === 'succeeded' && <MovieList movies={movies} loading={loading} />}
+          {status === 'succeeded' && <MovieList movies={movies} />}
         </div>
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </div>
     </div>
   );
