@@ -1,0 +1,12 @@
+.header__button {
+    background-color: #FF5500;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+  
+.header__button:hover {
+    background-color: #ff8533;
+}

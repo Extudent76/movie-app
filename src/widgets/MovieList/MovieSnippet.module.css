@@ -1,0 +1,25 @@
+.movieSnippet {
+    display: flex;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+  }
+  
+  .movieSnippet img {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .movieInfo {
+    flex-grow: 1;
+  }
+  
+  .rating {
+    display: flex;
+    gap: 4px;
+  }
+  
