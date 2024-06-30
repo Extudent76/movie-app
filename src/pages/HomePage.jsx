@@ -6,7 +6,7 @@ import Filter from '../widgets/Filter/Filter';
 import MovieList from '../widgets/MovieList/MovieList';
 import Pagination from '../shared/components/Pagination/Pagination';
 import Loader from '../shared/components/Loader/Loader';
-import { fetchMovies } from '../features/Movies/movieThunks';
+import { fetchMovies, rateMovie } from '../features/Movies/movieThunks';
 import styles from './HomePage.module.css';
 
 const HomePage = () => {
@@ -90,6 +90,12 @@ const HomePage = () => {
     }));
   };
 
+  const handleRate = (movieId, rating) => {
+    console.log(`Dispatching rateMovie for movie ${movieId} with rating ${rating}`);
+    const token = useSelector((state) => state.auth.token);
+    dispatch(rateMovie({ movieId, userRate: rating, token }));
+  };
+
   return (
     <div className={styles.homePage}>
       <Header />
@@ -98,7 +104,7 @@ const HomePage = () => {
         <div className={styles.movieListContainer}>
           {status === 'loading' && <Loader />}
           {status === 'failed' && <p>{error}</p>}
-          {status === 'succeeded' && <MovieList movies={movies} />}
+          {status === 'succeeded' && <MovieList movies={movies} onRate={handleRate} />}
         </div>
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </div>
@@ -107,4 +113,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

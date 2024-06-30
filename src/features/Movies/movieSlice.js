@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchMovies, fetchMovie, rateMovie } from './movieThunks';
+import { fetchMovies, rateMovie, fetchMovie } from './movieThunks';
 
 const movieSlice = createSlice({
   name: 'movies',
@@ -23,7 +23,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchMovies.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(fetchMovie.pending, (state) => {
         state.status = 'loading';
@@ -34,16 +34,16 @@ const movieSlice = createSlice({
       })
       .addCase(fetchMovie.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(rateMovie.fulfilled, (state, action) => {
         const { movieId, userRate } = action.payload;
-        if (state.currentMovie && state.currentMovie.id === movieId) {
-          state.currentMovie.userRating = userRate;
+        const movie = state.movies.find((movie) => movie.id === movieId);
+        if (movie) {
+          movie.userRating = userRate;
         }
       });
   },
 });
 
 export default movieSlice.reducer;
-

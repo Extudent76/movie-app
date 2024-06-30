@@ -44,28 +44,6 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
-export const fetchMovie = createAsyncThunk(
-  'movies/fetchMovie',
-  async (id, { rejectWithValue }) => {
-    try {
-      const response = await fetch(`http://localhost:3030/api/v1/movie/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      if (response.ok) {
-        return data;
-      } else {
-        return rejectWithValue(data);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 export const rateMovie = createAsyncThunk(
   'movies/rateMovie',
   async ({ movieId, userRate, token }, { rejectWithValue }) => {
@@ -74,17 +52,43 @@ export const rateMovie = createAsyncThunk(
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ movieId, user_rate: userRate }),
       });
+
       const data = await response.json();
       if (response.ok) {
+        console.log('Rate Response Data:', data);
         return { movieId, userRate };
       } else {
+        console.log('Error Rate Response:', data);
         return rejectWithValue(data);
       }
     } catch (error) {
+      console.log('Rate Error:', error.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchMovie = createAsyncThunk(
+  'movies/fetchMovie',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:3030/api/v1/movie/${id}`, {
+        method: 'GET',
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Fetch Movie Response Data:', data);
+        return data;
+      } else {
+        console.log('Error Fetch Movie Response:', data);
+        return rejectWithValue(data);
+      }
+    } catch (error) {
+      console.log('Fetch Movie Error:', error.message);
       return rejectWithValue(error.message);
     }
   }

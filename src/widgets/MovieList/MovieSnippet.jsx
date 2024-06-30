@@ -12,16 +12,23 @@ const MovieSnippet = ({ movie }) => {
   const navigate = useNavigate();
 
   const handleRate = (rating) => {
+    console.log(`Rating movie ${movie.id} with ${rating}`);
     dispatch(rateMovie({ movieId: movie.id, userRate: rating, token }));
   };
 
-  const handleCardClick = () => {
+  const handlePosterClick = (event) => {
+    event.stopPropagation();
     navigate(`/movie/${movie.id}`);
   };
 
   return (
-    <div className={styles.movieSnippet} onClick={handleCardClick}>
-      <img src={movie.poster} alt={movie.title} />
+    <div className={styles.movieSnippet}>
+      <img 
+        src={movie.poster} 
+        alt={movie.title} 
+        className={styles.poster}
+        onClick={handlePosterClick}
+      />
       <div className={styles.details}>
         <h3>{movie.title}</h3>
         <p>Жанр: {movie.genre}</p>

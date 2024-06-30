@@ -1,22 +1,13 @@
+import React from 'react';
 import MovieSnippet from './MovieSnippet';
-import Loader from '../../shared/components/Loader/Loader';
 import styles from './MovieList.module.css';
 
-const MovieList = ({ movies, loading }) => {
+const MovieList = ({ movies, onRate }) => {
   return (
     <div className={styles.movieList}>
-      {loading ? (
-        <Loader />
-      ) : movies.length > 0 ? (
-        movies.map((movie) => (
-          <MovieSnippet key={movie.id} movie={movie} />
-        ))
-      ) : (
-        <div className={styles.noMovies}>
-          <p>Фильмы не найдены</p>
-          <p>Измените запрос и попробуйте снова</p>
-        </div>
-      )}
+      {movies.map((movie) => (
+        <MovieSnippet key={movie.id} movie={movie} onRate={onRate} />
+      ))}
     </div>
   );
 };
