@@ -4,3 +4,8 @@
     gap: 20px;
   }
   
+  .noMovies {
+    text-align: center;
+    color: #999;
+    font-size: 16px;
+  }

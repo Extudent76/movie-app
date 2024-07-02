@@ -4,10 +4,11 @@ import Star from '../../shared/components/Star/Star';
 import styles from './MovieSnippet.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { rateMovie } from '../../features/Movies/movieThunks';
+import { selectIsAuthenticated, selectAuthToken } from '../../features/Selector/selectors';
 
 const MovieSnippet = ({ movie }) => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const token = useSelector((state) => state.auth.token);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const token = useSelector(selectAuthToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

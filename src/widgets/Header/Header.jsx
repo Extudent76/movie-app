@@ -5,11 +5,12 @@ import styles from './Header.module.css';
 import UserIcon from './UserIcon';
 import Button from '../../shared/components/Button/Button';
 import AuthModal from '../../features/Auth/AuthModal';
+import { selectIsAuthenticated } from '../../features/Selector/selectors';
 
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const handleLoginClick = () => {
     setIsModalOpen(true);

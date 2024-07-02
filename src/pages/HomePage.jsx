@@ -8,11 +8,21 @@ import Pagination from '../shared/components/Pagination/Pagination';
 import Loader from '../shared/components/Loader/Loader';
 import { fetchMovies, rateMovie } from '../features/Movies/movieThunks';
 import styles from './HomePage.module.css';
+import { 
+  selectMovies, 
+  selectMoviesStatus, 
+  selectMoviesError, 
+  selectTotalPages, 
+  selectAuthToken 
+} from '../features/Selector/selectors';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { movies, status, error, totalPages } = useSelector((state) => state.movies);
+  const movies = useSelector(selectMovies);
+  const status = useSelector(selectMoviesStatus);
+  const error = useSelector(selectMoviesError);
+  const totalPages = useSelector(selectTotalPages);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -24,7 +34,7 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: params.get('page') || 1,
-      limit: params.get('limit') || 5,
+      limit: params.get('limit') || 10,
     };
     setCurrentPage(Number(params.get('page')) || 1);
     console.log('Fetch Params:', fetchParams);
@@ -43,7 +53,7 @@ const HomePage = () => {
       sort_by: params.get('sort_by') || 'rating',
       order: params.get('order') || 'desc',
       page: page,
-      limit: params.get('limit') || 5,
+      limit: params.get('limit') || 10,
     }));
   };
 
@@ -92,7 +102,7 @@ const HomePage = () => {
 
   const handleRate = (movieId, rating) => {
     console.log(`Dispatching rateMovie for movie ${movieId} with rating ${rating}`);
-    const token = useSelector((state) => state.auth.token);
+    const token = useSelector(selectAuthToken);
     dispatch(rateMovie({ movieId, userRate: rating, token }));
   };
 

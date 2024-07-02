@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from './authThunks';
 import styles from './AuthModal.module.css';
 import Button from '../../shared/components/Button/Button';
+import { selectIsAuthenticated, selectAuthError } from '../Selector/selectors';
 
 const AuthModal = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const { isAuthenticated, error } = useSelector((state) => state.auth);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const error = useSelector(selectAuthError);
 
   const handleSubmit = (e) => {
     e.preventDefault();
