@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from '../widgets/Header/Header';
 import styles from './App.module.css';
 

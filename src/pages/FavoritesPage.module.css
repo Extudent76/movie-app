@@ -1,0 +1,21 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content h2 {
+  margin-bottom: 20px;
+}
+
+.empty {
+  color: #999;
+  font-size: 16px;
+}
